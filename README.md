@@ -33,14 +33,27 @@ project-root/
 │ ├── B1_to_B2_qry_gene_expression.csv
 │ └── B1_to_B2_qry_image_features.csv
 │
-├── tutorial.ipynb
 ├── .gitignore
-└── README.md
+├── README.md
+├── requirements.txt
+└── tutorial.ipynb
+
 ```
 
 ---
 
 ## Quick Start
+
+Tested on Python 3.12 with the following packages:
+
+```text
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+scikit-learn>=1.3
+scanpy>=1.9
+squidpy>=1.5
+```
 
 ### 1. Clone the repository
 ```bash
