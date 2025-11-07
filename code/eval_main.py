@@ -10,60 +10,6 @@ from scipy.spatial.distance import cdist
 from sklearn.preprocessing import StandardScaler
 import squidpy as sq
 
-
-
-
-#-------------------- Input Data --------------------#
-# 1. feature expression matrix, e.g.: gene expression matrix, image feature matrix
-# 2. spatial coordinates of pairwise alignment/registration samples - coordinates of query sample is mapped to ref sample
-# 3. 
-
-# Pairwise, B1-B2, B2-B3, and so on
-# gene expression cost for VALIS from scratch (no need to calculate distance_df ahead)
-
-# # parameter settings
-# ref_id = 'B1'
-# ref_type = 'ref'
-# qry_id = 'B2'
-# qry_type = 'query'
-# total_count = 1e4
-# top_n_hvg = 100
-# feature_type = 'gene expression'
-
-# # directory settings
-# spatial_coords_dir = './Desktop/HER2_data/test2_b_img/warped_spot_coords'
-# feat_dir = './Desktop/HER2_data'+'/'+ref_type+'/'+ref_id
-
-# spatial_coords_dir = './sample_data/spatial_coords'
-# feat_dir = './sample_data/features'
-
-
-### Inputs Handling ###
-# 1. Spatial information: pixal coordinates of the reference section & ref-based warped pixal coordiantes of the adjacent(query) section.
-	# The ref file should have two columns, namely 'x' and 'y', which store the original spatial coordinates, and indexed by spot id.
-	# The qry file should have two columns, namely 'x' and 'y', which store the warped spatial coordinates, and indexed by spot id.
-# 2. Feature expression matrices: Reference feature expression matrix & Query feature expression matrix. 
-	# The expression matrix should be a nxm matrix, where it has n spots and m features.
-# ----------------------------------------------------------------------------------------------------
-
-# ref_spatial = pd.read_csv(f'{ref_spatial_dir}/{ref_id}_selection.tsv', delimiter = '\t')
-# ref_spatial[['x','y']] = ref_spatial[['x','y']].astype(str)
-# ref_spatial.index = [f'{x}x{y}' for x, y in zip(ref_spatial['x'], ref_spatial['y'])]
-# ref_spatial = ref_spatial.loc[ref_idx]
-# ref_coords = ref_spatial[['pixel_x', 'pixel_y']].rename(columns={'pixel_x': 'x', 'pixel_y': 'y'})
-# qry_spatial = pd.read_csv(f'{qry_spatial_dir}/{qry_id}_selection.tsv', delimiter = '\t')
-# qry_spatial[['x','y']] = qry_spatial[['x','y']].astype(str)
-# qry_spatial.index = [f'{x}x{y}' for x, y in zip(qry_spatial['x'], qry_spatial['y'])]
-# qry_spatial = qry_spatial.loc[qry_idx]
-# qry_coords = qry_spatial[['registered_x', 'registered_y']].rename(columns={'registered_x': 'x', 'registered_y': 'y'})
-
-# sc.pp.highly_variable_genes(ref_exp_adata, flavor="seurat_v3", n_top_genes=top_n_svg)
-# ref_exp_adata = ref_exp_adata[:, ref_exp_adata.var['highly_variable']]
-# sc.pp.highly_variable_genes(qry_exp_adata, flavor="seurat_v3", n_top_genes=top_n_svg)
-# qry_exp_adata = qry_exp_adata[:, qry_exp_adata.var['highly_variable']]
-
-#====================================================================================================
-
 def rank_svg(adata):
 	adata.obsm["spatial"] = adata.obs[["x", "y"]].values # array_x and array_y used to search neighbors
 	sq.gr.spatial_neighbors(adata)
@@ -118,7 +64,7 @@ def compute_weighted_cost(ref_id, qry_id, spatial_coords_dir, feat_dir,
 		ref_exp = pd.read_csv(f'{feat_dir}/{ref_id}_{feature_type}.csv', index_col=0)
 	ref_feat_names = ref_exp.columns.tolist() # feature name list
 	ref_idx = ref_exp.index.tolist() # spot index/id list
-	ref_spatial = pd.read_csv(f'{spatial_coords_dir}/{ref_id}_to_{qry_id}_{feature_type}_ref_coords.csv', index_col=0)
+	ref_spatial = pd.read_csv(f'{spatial_coords_dir}/{ref_id}_to_{qry_id}_ref_{feature_type}_based_coords.csv', index_col=0)
 	ref_spatial = ref_spatial.loc[ref_idx]
 
 	# read in query feature and warped spatial coordinates #
@@ -130,7 +76,7 @@ def compute_weighted_cost(ref_id, qry_id, spatial_coords_dir, feat_dir,
 		qry_exp = pd.read_csv(f'{feat_dir}/{qry_id}_{feature_type}.csv', index_col=0)
 	qry_feat_names = qry_exp.columns.tolist()
 	qry_idx = qry_exp.index.tolist()
-	qry_spatial = pd.read_csv(f'{spatial_coords_dir}/{ref_id}_to_{qry_id}_{feature_type}_qry_coords.csv', index_col=0)
+	qry_spatial = pd.read_csv(f'{spatial_coords_dir}/{ref_id}_to_{qry_id}_qry_{feature_type}_based_coords.csv', index_col=0)
 	qry_spatial = qry_spatial.loc[qry_idx]
 	
 	if verbose == True:
