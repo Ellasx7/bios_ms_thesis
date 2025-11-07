@@ -10,6 +10,8 @@
 This project evaluates spatial alignment methods that integrate transcriptomic and image-based features from consecutive tissue sections.  
 The comparison framework supports quantitative and visual assessment of alignment accuracy based on spot-level coordinate transformations.
 
+![Workflow Diagram](workflow.png)
+**Figure 1:** Workflow of the thesis project
 ---
 
 ## Repository Structure
