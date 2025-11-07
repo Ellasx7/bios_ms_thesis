@@ -1,0 +1,7 @@
+anaconda_projects/
+code/__pycache__
+.DS_Store
+.ipynb_checkpoints/
+*.log
+*.tmp
+.idea/

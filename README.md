@@ -1,1 +1,2 @@
-# bios_ms_thesis
+# Thesis Project: Systematic Evaluation of Spatial Transcriptomics Alignment Methods 
+
